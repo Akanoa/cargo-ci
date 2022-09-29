@@ -1,0 +1,6 @@
+[dependencies]
+toto = {git = "git@gitlab.com:orga/project.git", tag="1.0.0"}
+
+
+[dev-dependencies.tata]
+version = "0.0.1"
