@@ -24,9 +24,9 @@ jobs:
       run: cargo test --verbose
 
   release:
-    name: release ${{ matrix.target }} (with non-required env)
+    name: release ${{ matrix.target }}
     runs-on: ubuntu-latest
-    if: github.event_name == 'release'
+    if: github.event_name == 'release' && github.event.action == 'created'
     strategy:
       fail-fast: false
       matrix:
