@@ -1,4 +1,4 @@
-use cargo_ci::{run, to_value};
+use cargo_ci::run;
 use clap::Parser;
 
 #[derive(Parser, clap::ValueEnum, Clone, Debug)]
@@ -31,7 +31,7 @@ enum CiKind {
 ///toto = {git = "https://gitlab-ci-token:token123@gitlab.com/orga/project.git", tag="1.0.0"}
 ///
 /// [dev-dependencies.titi]
-/// git = "https://gitlab-ci-token:token123gitlab.domain.tld/myorg/sub_project/data.git"
+/// git = "https://gitlab-ci-token:token123@gitlab.domain.tld/myorg/sub_project/data.git"
 /// tag = "1.0.0"
 /// default-no-features = "true"
 /// features = [
@@ -46,6 +46,9 @@ struct Args {
     /// Path to Cargo.toml file
     #[arg(short, long, default_value = "Cargo.toml")]
     path: String,
+    /// Output file
+    #[arg(short, long, default_value = "Cargo.toml")]
+    output: String,
     /// List of dependencies to convert
     #[arg(long = "deps", default_value = "vec![]", value_delimiter = ',')]
     dependencies: Vec<String>,
@@ -58,9 +61,19 @@ struct Args {
 }
 
 fn main() {
+    env_logger::init();
+
     let args = Args::parse();
 
-    let source = to_value(args.path).unwrap();
+    let result = run(
+        args.token,
+        args.path,
+        args.output,
+        args.dependencies,
+        args.dev_dependencies,
+    );
 
-    run(args.token, source, args.dependencies, args.dev_dependencies);
+    if let Err(err) = result {
+        log::error!("{:?}", err)
+    }
 }

@@ -16,3 +16,12 @@ version = "0.5.9"
 
 [dependencies.nom]
 version = "7.1.1"
+
+[dependencies.eyre]
+version = "0.6.8"
+
+[dependencies.log]
+version = "0.4.17"
+
+[dependencies.env_logger]
+version = "0.9.1"
