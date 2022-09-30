@@ -4,11 +4,11 @@
 
 This tool aims to resolve a specific problem.
 
-When you're using private dependency authenticate by a SSH key authentication in a CI environment, you'll encounter
+When you're using private dependency authenticate by an SSH key authentication in a CI environment, you'll encounter
 the issue of how to explain to Cargo that you want to get the dependency though an HTTPS basic authentication instead of
-a SSH one.
+an SSH one.
 
-Exemple:
+_Exemple_:
 
 ```toml
 [package]
@@ -58,4 +58,28 @@ build:
   stage: build
   script:
     - cargo-ci --path Cargo.toml --output Cargo.dest.toml --deps toto --dev-deps titi --token ${CI_TOKEN_JOB}
+```
+
+## How it works
+
+The tool takes a `Cargo.toml` file as input, scans each dependency and development dependency.
+
+If one of these dependencies is referenced either in `--deps` or `--dev-deps` options.
+
+It searches for `git` key, 
+
+If the `git` value is an SSH dependency, it'll transform it as HTTPS one using the `--token` parameter.
+
+_Exemple_:
+
+From
+
+```
+git@gitlab.com:orga/project.git
+```
+
+To
+
+```
+https://gitlab-ci-token:token123@gitlab.com/orga/project.git
 ```
