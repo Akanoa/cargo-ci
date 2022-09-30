@@ -1,11 +1,6 @@
 use cargo_ci::run;
 use clap::Parser;
 
-#[derive(Parser, clap::ValueEnum, Clone, Debug)]
-enum CiKind {
-    Gitlab,
-}
-
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 /// Convert a Cargo.toml private SSH dependencies to HTTPS dependenciecies
@@ -40,9 +35,6 @@ enum CiKind {
 /// ]
 ///```
 struct Args {
-    /// CI provider
-    #[arg(short, long, default_value = "CiKind::Gitlab")]
-    ci: CiKind,
     /// Path to Cargo.toml file
     #[arg(short, long, default_value = "Cargo.toml")]
     path: String,
